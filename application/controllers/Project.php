@@ -68,14 +68,12 @@ class Project extends CI_Controller
         $this->load->view('partials/footer');
     }
 
-    public function store()
+    public function add()
     {
-        // Must be AJAX request
         if (!$this->input->is_ajax_request()) {
             show_error('No direct script access allowed', 403);
         }
 
-        // Form validation with XSS filtering
         $this->form_validation->set_rules('project_name', 'Project Name', 'required|trim|xss_clean');
         $this->form_validation->set_rules('description', 'Description', 'required|trim|xss_clean');
         $this->form_validation->set_rules('start_date', 'Start Date', 'required|trim|xss_clean');

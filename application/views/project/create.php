@@ -5,10 +5,11 @@
         </div>
         <div class="card-body p-4">
 
-            <!-- Success/Error message container -->
             <div id="msg"></div>
 
-            <?= form_open('project/store', ['id' => 'createProjectForm']); ?>
+            <?= form_open('project/add', ['id' => 'createProjectForm']); ?>
+
+            <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
 
             <div class="form-floating mb-3">
                 <input type="text" name="project_name" class="form-control" required>
@@ -60,37 +61,21 @@
         </div>
     </div>
 </main>
-
-<!-- jQuery CDN (ensure included) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
     $(function() {
-        var csrfName = '<?= $this->security->get_csrf_token_name(); ?>';
-        var csrfHash = '<?= $this->security->get_csrf_hash(); ?>';
-
         $('#createProjectForm').on('submit', function(e) {
             e.preventDefault();
-
-            var formData = $(this).serializeArray();
-            formData.push({
-                name: csrfName,
-                value: csrfHash
-            });
 
             $.ajax({
                 url: $(this).attr('action'),
                 type: 'POST',
-                data: $.param(formData),
+                data: $(this).serialize(),
                 dataType: 'json',
                 beforeSend: function() {
                     $('#msg').html('<div class="alert alert-info">Processing...</div>');
                 },
                 success: function(response) {
-                    // Update CSRF token
-                    csrfName = response.csrfName;
-                    csrfHash = response.csrfHash;
-
                     if (response.success) {
                         $('#msg').html('<div class="alert alert-success">' + response.message + '</div>');
                         $('#createProjectForm')[0].reset();
@@ -98,8 +83,8 @@
                         $('#msg').html('<div class="alert alert-danger">' + response.message + '</div>');
                     }
                 },
-                error: function() {
-                    $('#msg').html('<div class="alert alert-danger">Something went wrong!</div>');
+                error: function(xhr, status, error) {
+                    $('#msg').html('<div class="alert alert-danger">Something went wrong!<br>' + xhr.responseText + '</div>');
                 }
             });
         });
