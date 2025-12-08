@@ -1,4 +1,4 @@
-<main class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 56px); padding:20px; background:#f8f9fa;">
+<main class="d-flex justify-content-center align-items-center" style="padding:20px; background:#f8f9fa;">
     <div class="card shadow-lg border-0 rounded-lg w-100" style="max-width:700px;background:#fff;">
         <div class="card-header bg-primary text-white text-center">
             <h3 class="mb-0 p-2">Create Project</h3>

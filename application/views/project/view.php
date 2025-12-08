@@ -1,45 +1,83 @@
 <main class="container my-5">
-    <div class="card shadow-lg border-0 rounded-lg">
-        <div class="card-header bg-info text-white">
-            <h3 class="mb-0">Project Details</h3>
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-info text-white d-flex align-items-center justify-content-between">
+            <h3 class="mb-0"><i class="bi bi-folder-fill me-2"></i>Project Details</h3>
+            <span class="badge 
+                <?php
+                $status = $project['status'];
+                if ($status === 'Pending') echo 'bg-warning text-dark';
+                elseif ($status === 'Ongoing') echo 'bg-primary';
+                elseif ($status === 'Completed') echo 'bg-success';
+                else echo 'bg-secondary';
+                ?> p-2">
+                <?= html_escape($status); ?>
+            </span>
         </div>
+
         <div class="card-body">
-            <table class="table table-bordered">
-                <tr>
-                    <th>Project Name</th>
-                    <td><?= html_escape($project['project_name']); ?></td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td><?= html_escape($project['description']); ?></td>
-                </tr>
-                <tr>
-                    <th>Start Date</th>
-                    <td><?= html_escape($project['start_date']); ?></td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td><?= html_escape($project['status']); ?></td>
-                </tr>
-                <tr>
-                    <th>Developer Name</th>
-                    <td><?= html_escape($project['developer_name']); ?></td>
-                </tr>
-                <tr>
-                    <th>Helping Hand</th>
-                    <td><?= html_escape($project['helping_hand']); ?></td>
-                </tr>
-                <tr>
-                    <th>Project Manager</th>
-                    <td><?= html_escape($project['project_manager']); ?></td>
-                </tr>
-                <tr>
-                    <th>Created At</th>
-                    <td><?= html_escape($project['created_at']); ?></td>
-                </tr>
-            </table>
-            <a href="<?= site_url('project/list'); ?>" class="btn btn-secondary mt-3">Back to List</a>
-            <a href="<?= site_url('project/edit/' . $project['id']); ?>" class="btn btn-warning mt-3">Edit Project</a>
+            <div class="row g-4 mb-4">
+
+                <div class="col-md-6">
+                    <div class="border rounded p-3 h-100 shadow-sm">
+                        <h6 class="text-muted"><i class="bi bi-pencil-square me-1"></i>Project Name</h6>
+                        <p class="fw-bold mb-0"><?= html_escape($project['project_name']); ?></p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded p-3 h-100 shadow-sm">
+                        <h6 class="text-muted"><i class="bi bi-person-fill me-1"></i>Developer</h6>
+                        <p class="fw-bold mb-0"><?= html_escape($project['developer_name']); ?></p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded p-3 h-100 shadow-sm">
+                        <h6 class="text-muted"><i class="bi bi-people-fill me-1"></i>Helping Hand</h6>
+                        <p class="fw-bold mb-0"><?= html_escape($project['helping_hand']); ?></p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded p-3 h-100 shadow-sm">
+                        <h6 class="text-muted"><i class="bi bi-person-badge-fill me-1"></i>Project Manager</h6>
+                        <p class="fw-bold mb-0"><?= html_escape($project['project_manager']); ?></p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded p-3 h-100 shadow-sm">
+                        <h6 class="text-muted"><i class="bi bi-calendar-event-fill me-1"></i>Start Date</h6>
+                        <p class="fw-bold mb-0"><?= html_escape($project['start_date']); ?></p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="border rounded p-3 h-100 shadow-sm">
+                        <h6 class="text-muted"><i class="bi bi-clock-fill me-1"></i>Created At</h6>
+                        <p class="fw-bold mb-0"><?= html_escape($project['created_at']); ?></p>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="border rounded p-3 shadow-sm">
+                        <h6 class="text-muted"><i class="bi bi-card-text me-1"></i>Description</h6>
+                        <p class="mb-0"><?= html_escape($project['description']); ?></p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+                <a href="<?= site_url('project/list'); ?>" class="btn btn-secondary flex-fill d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-arrow-left-circle"></i> Back to List
+                </a>
+                <a href="<?= site_url('project/edit/' . $project['id']); ?>" class="btn btn-warning flex-fill d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-pencil-square"></i> Edit Project
+                </a>
+            </div>
         </div>
     </div>
 </main>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

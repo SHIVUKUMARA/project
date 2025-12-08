@@ -20,7 +20,6 @@
                                 <th>Developer</th>
                                 <th>Helping Hand</th>
                                 <th>Project Manager</th>
-                                <th>Created At</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -31,11 +30,20 @@
                                     <td><?= html_escape($project['project_name']); ?></td>
                                     <td><?= html_escape($project['description']); ?></td>
                                     <td><?= html_escape($project['start_date']); ?></td>
-                                    <td><?= html_escape($project['status']); ?></td>
+                                    <td>
+                                        <?php if ($project['status'] === 'Pending'): ?>
+                                            <span class="badge bg-warning text-dark p-2"><?= html_escape($project['status']); ?></span>
+                                        <?php elseif ($project['status'] === 'Ongoing'): ?>
+                                            <span class="badge bg-primary p-2"><?= html_escape($project['status']); ?></span>
+                                        <?php elseif ($project['status'] === 'Completed'): ?>
+                                            <span class="badge bg-success p-2"><?= html_escape($project['status']); ?></span>
+                                        <?php else: ?>
+                                            <span class="badge bg-secondary p-2"><?= html_escape($project['status']); ?></span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= html_escape($project['developer_name']); ?></td>
                                     <td><?= html_escape($project['helping_hand']); ?></td>
                                     <td><?= html_escape($project['project_manager']); ?></td>
-                                    <td><?= html_escape($project['created_at']); ?></td>
                                     <td>
                                         <div class="d-flex justify-content-center gap-1">
                                             <a href="<?= site_url('project/view/' . $project['id']); ?>" class="btn btn-info btn-sm">View</a>
