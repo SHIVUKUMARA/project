@@ -5,64 +5,111 @@
         </div>
         <div class="card-body p-4">
 
-            <?php if ($this->session->flashdata('success')): ?>
-                <div class="alert alert-success alert-dismissible fade show">
-                    <?= $this->session->flashdata('success'); ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div id="response"></div>
+
+            <form id="editProjectForm" action="<?= site_url('project/edit/' . $project['id']); ?>" method="post">
+
+                <input type="hidden"
+                    name="<?= $this->security->get_csrf_token_name(); ?>"
+                    value="<?= $this->security->get_csrf_hash(); ?>">
+
+                <div class="form-floating mb-3">
+                    <input type="text" name="project_name" class="form-control"
+                        value="<?= html_escape($project['project_name']); ?>" required>
+                    <label>Project Name</label>
                 </div>
-            <?php endif; ?>
 
-            <?= validation_errors('<div class="alert alert-danger">', '</div>'); ?>
-
-            <?= form_open('project/edit/' . $project['id']); ?>
-
-            <div class="form-floating mb-3">
-                <input type="text" name="project_name" class="form-control" value="<?= html_escape(set_value('project_name', $project['project_name'])); ?>" required>
-                <label>Project Name</label>
-            </div>
-
-            <div class="form-floating mb-3">
-                <textarea name="description" class="form-control" style="height:100px;" required><?= html_escape(set_value('description', $project['description'])); ?></textarea>
-                <label>Description</label>
-            </div>
-
-            <div class="row g-3 mb-3">
-                <div class="form-floating col-md-6">
-                    <input type="date" name="start_date" class="form-control" value="<?= html_escape(set_value('start_date', $project['start_date'])); ?>" required>
-                    <label>Start Date</label>
+                <div class="form-floating mb-3">
+                    <textarea name="description" class="form-control" style="height:100px;" required><?= html_escape($project['description']); ?></textarea>
+                    <label>Description</label>
                 </div>
-                <div class="form-floating col-md-6">
-                    <select name="status" class="form-select" required>
-                        <option value="">Select Status</option>
-                        <option value="Pending" <?= set_select('status', 'Pending', $project['status'] == 'Pending'); ?>>Pending</option>
-                        <option value="Ongoing" <?= set_select('status', 'Ongoing', $project['status'] == 'Ongoing'); ?>>Ongoing</option>
-                        <option value="Completed" <?= set_select('status', 'Completed', $project['status'] == 'Completed'); ?>>Completed</option>
-                    </select>
-                    <label>Status</label>
+
+                <div class="row g-3 mb-3">
+                    <div class="form-floating col-md-6">
+                        <input type="date" name="start_date" class="form-control"
+                            value="<?= html_escape($project['start_date']); ?>" required>
+                        <label>Start Date</label>
+                    </div>
+
+                    <div class="form-floating col-md-6">
+                        <select name="status" class="form-select" required>
+                            <option value="">Select Status</option>
+                            <option value="Pending" <?= $project['status'] == "Pending" ? "selected" : ""; ?>>Pending</option>
+                            <option value="Ongoing" <?= $project['status'] == "Ongoing" ? "selected" : ""; ?>>Ongoing</option>
+                            <option value="Completed" <?= $project['status'] == "Completed" ? "selected" : ""; ?>>Completed</option>
+                        </select>
+                        <label>Status</label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-floating mb-3">
-                <input type="text" name="developer_name" class="form-control" value="<?= html_escape(set_value('developer_name', $project['developer_name'])); ?>" required>
-                <label>Developer Name</label>
-            </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="developer_name" class="form-control"
+                        value="<?= html_escape($project['developer_name']); ?>" required>
+                    <label>Developer Name</label>
+                </div>
 
-            <div class="form-floating mb-3">
-                <input type="text" name="helping_hand" class="form-control" value="<?= html_escape(set_value('helping_hand', $project['helping_hand'])); ?>">
-                <label>Helping Hand (Optional)</label>
-            </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="helping_hand" class="form-control"
+                        value="<?= html_escape($project['helping_hand']); ?>">
+                    <label>Helping Hand (Optional)</label>
+                </div>
 
-            <div class="form-floating mb-4">
-                <input type="text" name="project_manager" class="form-control" value="<?= html_escape(set_value('project_manager', $project['project_manager'])); ?>" required>
-                <label>Project Manager</label>
-            </div>
+                <div class="form-floating mb-4">
+                    <input type="text" name="project_manager" class="form-control"
+                        value="<?= html_escape($project['project_manager']); ?>" required>
+                    <label>Project Manager</label>
+                </div>
 
-            <div class="d-flex justify-content-center gap-2 mt-4">
-                <button type="submit" class="btn btn-warning">Update Project</button>
-                <a href="<?= site_url('project/list'); ?>" class="btn btn-secondary">Cancel</a>
-            </div>
+                <div class="d-flex justify-content-center gap-2 mt-4">
+                    <button type="submit" class="btn btn-warning" id="submitBtn">Update Project</button>
+                    <a href="<?= site_url('project/list'); ?>" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
 
-            <?= form_close(); ?>
         </div>
     </div>
 </main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).on('submit', '#editProjectForm', function(e) {
+        e.preventDefault();
+
+        let form = $(this);
+        let submitBtn = $("#submitBtn");
+
+        submitBtn.prop("disabled", true).text("Updating...");
+
+        $.ajax({
+            url: form.attr('action'),
+            type: 'POST',
+            data: form.serialize(),
+            dataType: 'json',
+
+            success: function(res) {
+                $("input[name='<?= $this->security->get_csrf_token_name(); ?>']")
+                    .val(res.csrfToken);
+
+                if (res.status === 'error') {
+                    $("#response").html(
+                        `<div class="alert alert-danger">${res.errors}</div>`
+                    );
+                    submitBtn.prop("disabled", false).text("Update Project");
+                }
+
+                if (res.status === 'success') {
+                    $("#response").html(
+                        `<div class="alert alert-success">${res.message}</div>`
+                    );
+
+                    submitBtn.prop("disabled", false).text("Update Project");
+                }
+            },
+
+            error: function() {
+                $("#response").html(`<div class="alert alert-danger">Server error. Try again.</div>`);
+                submitBtn.prop("disabled", false).text("Update Project");
+            }
+        });
+    });
+</script>

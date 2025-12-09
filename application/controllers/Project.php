@@ -17,8 +17,6 @@ class Project extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Project_model');
-        $this->load->library(['form_validation', 'session']);
-        $this->load->helper(['url', 'form']);
     }
 
     public function list($page = 0)
@@ -90,7 +88,7 @@ class Project extends CI_Controller
             ]);
             return;
         }
-
+        // $token = bin2hex(random_bytes(16));
         $projectData = [
             'project_name'    => $this->input->post('project_name', TRUE),
             'description'     => $this->input->post('description', TRUE),
@@ -147,12 +145,22 @@ class Project extends CI_Controller
 
         $this->form_validation->set_rules('project_name', 'Project Name', 'required|trim|xss_clean');
         $this->form_validation->set_rules('description', 'Description', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('start_date', 'Starting Date', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('start_date', 'Start Date', 'required|trim|xss_clean');
         $this->form_validation->set_rules('status', 'Status', 'required|trim|xss_clean');
         $this->form_validation->set_rules('developer_name', 'Developer Name', 'required|trim|xss_clean');
         $this->form_validation->set_rules('project_manager', 'Project Manager', 'required|trim|xss_clean');
 
-        if ($this->form_validation->run() === TRUE) {
+        if ($this->input->method() === 'post') {
+
+            if ($this->form_validation->run() === FALSE) {
+                echo json_encode([
+                    'status' => 'error',
+                    'errors' => strip_tags(validation_errors()),
+                    'csrfToken' => $this->security->get_csrf_hash()
+                ]);
+                return;
+            }
+
             $updateData = [
                 'project_name'    => $this->input->post('project_name', TRUE),
                 'description'     => $this->input->post('description', TRUE),
@@ -160,12 +168,17 @@ class Project extends CI_Controller
                 'status'          => $this->input->post('status', TRUE),
                 'developer_name'  => $this->input->post('developer_name', TRUE),
                 'helping_hand'    => $this->input->post('helping_hand', TRUE),
-                'project_manager' => $this->input->post('project_manager', TRUE)
+                'project_manager' => $this->input->post('project_manager', TRUE),
             ];
 
             $this->Project_model->update_project($id, $updateData);
-            $this->session->set_flashdata('success', 'Project updated successfully!');
-            redirect('project/index');
+
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Project updated successfully!',
+                'csrfToken' => $this->security->get_csrf_hash()
+            ]);
+            return;
         }
 
         $this->load->view('partials/header', $data);
