@@ -1,0 +1,159 @@
+.sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 260px;
+	background: #212529;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	transition: width 0.3s;
+	z-index: 1000;
+}
+.sidebar.collapsed {
+	width: 75px;
+}
+
+.sidebar-logo {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.logo-text {
+	display: inline-block;
+	white-space: nowrap;
+	transition: all 0.3s;
+	font-size: 1.2rem;
+}
+
+.sidebar.collapsed .logo-text {
+	font-size: 0;
+}
+
+.sidebar.collapsed .logo-text::after {
+	content: "CRM";
+	font-size: 1rem;
+	display: inline-block;
+}
+
+/* Menu */
+.nav-link {
+	display: flex;
+	align-items: center;
+	padding: 10px 15px;
+}
+.link-text {
+	transition: opacity 0.3s;
+}
+.sidebar.collapsed .link-text {
+	display: none;
+}
+
+/* User text */
+.user-text {
+	transition: opacity 0.3s;
+}
+.sidebar.collapsed .user-text {
+	display: none;
+}
+
+/* Top navbar */
+#topNav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 56px;
+	width: calc(100% - 260px);
+	margin-left: 260px;
+	transition: all 0.3s;
+	z-index: 1100;
+}
+
+/* Content */
+.content {
+	margin-left: 260px;
+	padding-top: 56px;
+	transition: margin-left 0.3s;
+}
+
+/* Collapsed classes applied via JS */
+#topNav.sidebar-collapsed {
+	width: calc(100% - 75px);
+	margin-left: 75px;
+}
+.content.sidebar-collapsed {
+	margin-left: 75px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+	.sidebar {
+		transform: translateX(-100%);
+		width: 260px;
+	}
+	.sidebar.show {
+		transform: translateX(0);
+	}
+	#topNav,
+	.content {
+		width: 100% !important;
+		margin-left: 0 !important;
+	}
+}
+
+/* Hide submenu by default */
+.submenu {
+	display: none;
+	list-style: none;
+	flex-direction: column;
+	padding-left: 0;
+}
+
+/* Show submenu when parent has open class */
+.nav-item.dropdown.open .submenu {
+	display: flex;
+}
+
+/* Optional: small transition */
+.submenu li {
+	transition: all 0.2s;
+}
+
+/* Active submenu highlight */
+.submenu .dropdown-item.active {
+	background-color: #495057;
+}
+
+.sidebar.collapsed .submenu {
+	display: none !important;
+}
+
+.nav-item.dropdown .dropdown-toggle::after {
+	content: none !important;
+}
+
+.nav-item.dropdown .arrow-icon {
+	transition: transform 0.3s;
+}
+
+.nav-item.dropdown.open .arrow-icon {
+	transform: rotate(90deg);
+}
+
+#mainContent {
+	position: absolute;
+	top: 80px;
+	left: 260px;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	padding: 20px;
+	transition: left 0.3s;
+}
+
+#mainContent .card {
+	width: 100%;
+	max-width: 700px;
+}

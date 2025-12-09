@@ -53,6 +53,7 @@ class Project extends CI_Controller
 
         $this->load->view('partials/header', $data);
         $this->load->view('partials/navbar');
+        // $this->load->view('partials/sidebar');
         $this->load->view('project/list', $data);
         $this->load->view('partials/footer');
     }
@@ -62,6 +63,7 @@ class Project extends CI_Controller
         $data['title'] = 'Create Project | CRM';
         $this->load->view('partials/header', $data);
         $this->load->view('partials/navbar');
+        // $this->load->view('partials/sidebar');
         $this->load->view('project/create', $data);
         $this->load->view('partials/footer');
     }
@@ -107,7 +109,8 @@ class Project extends CI_Controller
                 'success' => true,
                 'message' => 'Project created successfully!',
                 'csrfName' => $this->security->get_csrf_token_name(),
-                'csrfHash' => $this->security->get_csrf_hash()
+                'csrfHash' => $this->security->get_csrf_hash(),
+                'resetForm' => true
             ]);
         } else {
             echo json_encode([
@@ -128,6 +131,7 @@ class Project extends CI_Controller
         $data['title'] = 'View Project | CRM';
         $this->load->view('partials/header', $data);
         $this->load->view('partials/navbar');
+        // $this->load->view('partials/sidebar');
         $this->load->view('project/view', $data);
         $this->load->view('partials/footer');
     }
@@ -176,13 +180,15 @@ class Project extends CI_Controller
             echo json_encode([
                 'status' => 'success',
                 'message' => 'Project updated successfully!',
-                'csrfToken' => $this->security->get_csrf_hash()
+                'csrfName' => $this->security->get_csrf_token_name(),
+                'csrfHash' => $this->security->get_csrf_hash()
             ]);
             return;
         }
 
         $this->load->view('partials/header', $data);
         $this->load->view('partials/navbar');
+        // $this->load->view('partials/sidebar');
         $this->load->view('project/edit', $data);
         $this->load->view('partials/footer');
     }

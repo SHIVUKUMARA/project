@@ -1,14 +1,12 @@
-<main class="d-flex justify-content-center align-items-center" style="padding:20px; background:#f8f9fa;">
+<main id="mainContent">
     <div class="card shadow-lg border-0 rounded-lg w-100" style="max-width:700px;background:#fff;">
         <div class="card-header bg-primary text-white text-center">
             <h3 class="mb-0 p-2">Create Project</h3>
         </div>
         <div class="card-body p-4">
-
             <div id="msg"></div>
 
             <?= form_open('project/add', ['id' => 'createProjectForm']); ?>
-
             <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
 
             <div class="form-floating mb-3">
@@ -61,32 +59,3 @@
         </div>
     </div>
 </main>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(function() {
-        $('#createProjectForm').on('submit', function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: $(this).serialize(),
-                dataType: 'json',
-                beforeSend: function() {
-                    $('#msg').html('<div class="alert alert-info">Processing...</div>');
-                },
-                success: function(response) {
-                    if (response.success) {
-                        $('#msg').html('<div class="alert alert-success">' + response.message + '</div>');
-                        $('#createProjectForm')[0].reset();
-                    } else {
-                        $('#msg').html('<div class="alert alert-danger">' + response.message + '</div>');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    $('#msg').html('<div class="alert alert-danger">Something went wrong!<br>' + xhr.responseText + '</div>');
-                }
-            });
-        });
-    });
-</script>

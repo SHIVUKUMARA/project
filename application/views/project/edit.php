@@ -1,4 +1,4 @@
-<main class="d-flex justify-content-center align-items-center my-5">
+<main id="mainContent" class="d-flex justify-content-center align-items-start p-4" style="min-height: calc(100vh - 56px); background:#f8f9fa;">
     <div class="card shadow-lg border-0 rounded-lg w-100" style="max-width:700px;">
         <div class="card-header bg-warning text-white text-center">
             <h3 class="mb-0 p-2">Edit Project</h3>
@@ -8,7 +8,6 @@
             <div id="response"></div>
 
             <form id="editProjectForm" action="<?= site_url('project/edit/' . $project['id']); ?>" method="post">
-
                 <input type="hidden"
                     name="<?= $this->security->get_csrf_token_name(); ?>"
                     value="<?= $this->security->get_csrf_hash(); ?>">
@@ -69,47 +68,3 @@
         </div>
     </div>
 </main>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-    $(document).on('submit', '#editProjectForm', function(e) {
-        e.preventDefault();
-
-        let form = $(this);
-        let submitBtn = $("#submitBtn");
-
-        submitBtn.prop("disabled", true).text("Updating...");
-
-        $.ajax({
-            url: form.attr('action'),
-            type: 'POST',
-            data: form.serialize(),
-            dataType: 'json',
-
-            success: function(res) {
-                $("input[name='<?= $this->security->get_csrf_token_name(); ?>']")
-                    .val(res.csrfToken);
-
-                if (res.status === 'error') {
-                    $("#response").html(
-                        `<div class="alert alert-danger">${res.errors}</div>`
-                    );
-                    submitBtn.prop("disabled", false).text("Update Project");
-                }
-
-                if (res.status === 'success') {
-                    $("#response").html(
-                        `<div class="alert alert-success">${res.message}</div>`
-                    );
-
-                    submitBtn.prop("disabled", false).text("Update Project");
-                }
-            },
-
-            error: function() {
-                $("#response").html(`<div class="alert alert-danger">Server error. Try again.</div>`);
-                submitBtn.prop("disabled", false).text("Update Project");
-            }
-        });
-    });
-</script>

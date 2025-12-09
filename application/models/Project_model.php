@@ -10,7 +10,6 @@ class Project_model extends CI_Model
         $this->load->database();
     }
 
-    // Insert project data
     public function insert_project($data)
     {
         return $this->db->insert('projects', $data);

@@ -1,5 +1,5 @@
-<main class="container my-5">
-    <div class="card shadow-lg border-0 rounded-lg">
+<main id="mainContent">
+    <div class="card shadow-lg border-0 rounded-lg w-100" style="max-width:1200px; background:#fff;">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h3 class="mb-0 p-2">All Projects</h3>
             <a href="<?= site_url('project/create'); ?>" class="btn btn-success btn-sm">Add New Project</a>
@@ -9,7 +9,7 @@
                 <div class="alert alert-info">No projects found.</div>
             <?php else: ?>
                 <div style="overflow:auto; max-height:500px;">
-                    <table class="table table-striped table-bordered table-hover text-center" style="min-width:1200px;">
+                    <table class="table table-striped table-bordered table-hover text-center" style="min-width:1000px;">
                         <thead class="table-dark">
                             <tr style="position: sticky; top: 0; z-index: 10;">
                                 <th>ID</th>
