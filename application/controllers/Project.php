@@ -53,7 +53,6 @@ class Project extends CI_Controller
 
         $this->load->view('partials/header', $data);
         $this->load->view('partials/navbar');
-        // $this->load->view('partials/sidebar');
         $this->load->view('project/list', $data);
         $this->load->view('partials/footer');
     }
@@ -63,7 +62,6 @@ class Project extends CI_Controller
         $data['title'] = 'Create Project | CRM';
         $this->load->view('partials/header', $data);
         $this->load->view('partials/navbar');
-        // $this->load->view('partials/sidebar');
         $this->load->view('project/create', $data);
         $this->load->view('partials/footer');
     }
@@ -131,7 +129,6 @@ class Project extends CI_Controller
         $data['title'] = 'View Project | CRM';
         $this->load->view('partials/header', $data);
         $this->load->view('partials/navbar');
-        // $this->load->view('partials/sidebar');
         $this->load->view('project/view', $data);
         $this->load->view('partials/footer');
     }
@@ -188,8 +185,32 @@ class Project extends CI_Controller
 
         $this->load->view('partials/header', $data);
         $this->load->view('partials/navbar');
-        // $this->load->view('partials/sidebar');
         $this->load->view('project/edit', $data);
         $this->load->view('partials/footer');
+    }
+
+    public function delete($id)
+    {
+        if ($this->input->method() !== 'post') {
+            show_error('No direct script access allowed', 403);
+        }
+
+        $project = $this->Project_model->get_project_by_id($id);
+        if (!$project) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Project not found.',
+                'csrfHash' => $this->security->get_csrf_hash()
+            ]);
+            return;
+        }
+
+        $deleted = $this->Project_model->delete_project($id);
+
+        echo json_encode([
+            'status' => $deleted ? 'success' : 'error',
+            'message' => $deleted ? 'Project deleted successfully.' : 'Failed to delete project.',
+            'csrfHash' => $this->security->get_csrf_hash()
+        ]);
     }
 }

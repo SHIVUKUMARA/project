@@ -90,3 +90,56 @@ $(function () {
 		});
 	});
 });
+
+// delete Project
+$(document).ready(function () {
+	$(document).on("click", ".btn-delete", function () {
+		let projectId = $(this).data("id");
+		if (!confirm("Are you sure you want to delete this project?")) return;
+
+		let form = $(this).closest("td").find(".deleteProjectForm");
+
+		$.ajax({
+			url: form.attr("action"),
+			type: "POST",
+			data: form.serialize(),
+			dataType: "json",
+			success: function (res) {
+				// Update CSRF token in the form
+				form
+					.find("input[name='<?= $this->security->get_csrf_token_name(); ?>']")
+					.val(res.csrfHash);
+
+				if (res.status === "success") {
+					$("#projectRow" + projectId).remove();
+					showToast(res.message, "success");
+				} else {
+					showToast(res.message, "danger");
+				}
+			},
+			error: function () {
+				showToast("Server error. Try again.", "danger");
+			},
+		});
+	});
+
+	// toast function
+	function showToast(message, type = "info") {
+		let toastId = "toast" + Date.now();
+		let toastHtml = `
+            <div id="${toastId}" class="toast align-items-center text-bg-${type} border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>`;
+		$("#toastContainer").append(toastHtml);
+		let toastEl = document.getElementById(toastId);
+		let toast = new bootstrap.Toast(toastEl, { delay: 5000 });
+		toast.show();
+
+		toastEl.addEventListener("hidden.bs.toast", function () {
+			$(this).remove();
+		});
+	}
+});

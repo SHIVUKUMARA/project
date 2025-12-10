@@ -1,16 +1,30 @@
-<nav class="navbar navbar-dark px-3" id="topNav" style="background-color: #343a40;">
+<nav class="navbar navbar-dark px-3 d-flex align-content-center" id="topNav" style="background-color: #343a40;">
     <button class="btn btn-outline-light me-3" id="sidebarToggle">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">Logout</a>
+
+    <div class="dropdown p-3 profile-dropdown ms-auto">
+        <a href="#" class="d-flex align-items-center text-white">
+            <img src="https://github.com/mdo.png" class="rounded-circle me-2" width="32" height="32">
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end profile-menu">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+    </div>
 </nav>
 
 <div class="sidebar bg-dark text-white" id="sidebar">
-    <div class="sidebar-logo text-center py-3">
+    <div class="sidebar-logo text-center py-3 border-bottom">
         <span class="logo-text fw-bold">CRM Tool</span>
     </div>
 
-    <ul class="nav flex-column px-2 mt-3">
+    <ul class="nav flex-column px-2 mt-1">
         <li class="nav-item">
             <a class="nav-link text-white d-flex align-items-center" href="<?= base_url('project/create') ?>">
                 <i class="bi bi-speedometer2 me-2"></i>
@@ -41,18 +55,4 @@
         </li>
     </ul>
 
-    <div class="dropdown p-3 border-top mt-auto">
-        <a href="#" class="d-flex align-items-center text-white dropdown-toggle" data-bs-toggle="dropdown">
-            <img src="https://github.com/mdo.png" class="rounded-circle me-2" width="32" height="32">
-            <strong class="user-text">User</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li>
-                <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-        </ul>
-    </div>
 </div>

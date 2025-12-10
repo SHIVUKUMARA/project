@@ -37,6 +37,11 @@ class Project_model extends CI_Model
         $this->db->where('id', $id);
         return $this->db->update('projects', $data);
     }
+
+    public function delete_project($id)
+    {
+        return $this->db->delete('projects', ['id' => $id]);
+    }
 }
 
 // CREATE TABLE projects (
