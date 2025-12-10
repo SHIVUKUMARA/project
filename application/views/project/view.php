@@ -1,4 +1,4 @@
-<main id="mainContent" class="d-flex justify-content-center align-items-start p-4" style="min-height: calc(100vh - 56px); background:#f8f9fa;">
+<main id="mainContent" class="d-flex justify-content-center align-items-start p-4" style="min-height: calc(100vh - 56px);">
     <div class="card shadow-lg border-0 rounded-4 w-100" style="max-width:900px;">
         <div class="card-header bg-info text-white d-flex align-items-center justify-content-between">
             <h3 class="mb-0"><i class="bi bi-folder-fill me-2"></i>Project Details</h3>

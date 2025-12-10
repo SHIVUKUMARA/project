@@ -42,6 +42,12 @@ class Project_model extends CI_Model
     {
         return $this->db->delete('projects', ['id' => $id]);
     }
+
+    // Count projects by status
+    public function count_projects_by_status($status)
+    {
+        return $this->db->where('status', $status)->count_all_results('projects');
+    }
 }
 
 // CREATE TABLE projects (

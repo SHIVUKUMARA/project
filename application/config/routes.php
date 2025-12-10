@@ -55,6 +55,7 @@ $route['create'] = 'project/create';
 $route['list'] = 'project/list';
 $route['view/(:num)'] = 'project/view/$1';
 $route['edit/(:num)'] = 'project/edit/$1';
+$route['dashboard'] = 'project/dashboard';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

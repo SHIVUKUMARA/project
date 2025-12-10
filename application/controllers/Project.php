@@ -72,12 +72,12 @@ class Project extends CI_Controller
             show_error('No direct script access allowed', 403);
         }
 
-        $this->form_validation->set_rules('project_name', 'Project Name', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('description', 'Description', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('start_date', 'Start Date', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('status', 'Status', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('developer_name', 'Developer Name', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('project_manager', 'Project Manager', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('project_name', 'Project Name', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('description', 'Description', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('start_date', 'Start Date', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('developer_name', 'Developer Name', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('project_manager', 'Project Manager', 'trim|required|xss_clean');
 
         if ($this->form_validation->run() === FALSE) {
             echo json_encode([
@@ -144,12 +144,12 @@ class Project extends CI_Controller
         $this->load->library(['form_validation', 'session']);
         $this->load->helper(['url', 'form']);
 
-        $this->form_validation->set_rules('project_name', 'Project Name', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('description', 'Description', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('start_date', 'Start Date', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('status', 'Status', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('developer_name', 'Developer Name', 'required|trim|xss_clean');
-        $this->form_validation->set_rules('project_manager', 'Project Manager', 'required|trim|xss_clean');
+        $this->form_validation->set_rules('project_name', 'Project Name', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('description', 'Description', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('start_date', 'Start Date', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('developer_name', 'Developer Name', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('project_manager', 'Project Manager', 'trim|required|xss_clean');
 
         if ($this->input->method() === 'post') {
 
@@ -212,5 +212,27 @@ class Project extends CI_Controller
             'message' => $deleted ? 'Project deleted successfully.' : 'Failed to delete project.',
             'csrfHash' => $this->security->get_csrf_hash()
         ]);
+    }
+
+    public function dashboard()
+    {
+        $this->load->library('session');
+
+        $data['title'] = 'Project Dashboard | CRM';
+
+        // Total projects
+        $data['total_projects'] = $this->Project_model->count_projects();
+
+        // Projects by status
+        $data['status_counts'] = [
+            'Pending'   => $this->Project_model->count_projects_by_status('Pending'),
+            'Ongoing'   => $this->Project_model->count_projects_by_status('Ongoing'),
+            'Completed' => $this->Project_model->count_projects_by_status('Completed')
+        ];
+
+        $this->load->view('partials/header', $data);
+        $this->load->view('partials/navbar');
+        $this->load->view('project/dashboard', $data);
+        $this->load->view('partials/footer');
     }
 }

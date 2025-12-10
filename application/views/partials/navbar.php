@@ -26,7 +26,7 @@
 
     <ul class="nav flex-column px-2 mt-1">
         <li class="nav-item">
-            <a class="nav-link text-white d-flex align-items-center" href="<?= base_url('project/create') ?>">
+            <a class="nav-link text-white d-flex align-items-center" href="<?= base_url('project/dashboard') ?>">
                 <i class="bi bi-speedometer2 me-2"></i>
                 <span class="link-text">Dashboard</span>
             </a>
